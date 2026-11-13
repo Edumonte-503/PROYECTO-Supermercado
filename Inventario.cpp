@@ -24,10 +24,10 @@ producto inventario[8] = {
 
 void mostrarInventario()
 {
-    cout << setw(15) << "Código" << setw(15) << "Nombre" << setw(15) << "Cantidad" << setw(15) << "Precio" << endl;
+    cout << setw(18) << "Código" << setw(18) << "Nombre" << setw(18) << "Cantidad" << setw(18) << "Precio" << endl;
     for (int i = 0; i < 8; i++)
     {
-        cout << setw(15) << inventario[i].codigo << setw(15) << inventario[i].nombre << setw(15) << inventario[i].cantidad << setw(15) << "$" << fixed << setprecision(2) << inventario[i].precio << endl;
+        cout << setw(16) << inventario[i].codigo << setw(18 + (inventario[i].nombre == "Azúcar" || inventario[i].nombre == "Café")) << inventario[i].nombre << setw(16) << inventario[i].cantidad << setw(16) << "$" << fixed << setprecision(2) << inventario[i].precio << endl;
     }
 }
 
