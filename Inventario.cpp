@@ -33,6 +33,33 @@ void mostrarInventario()
         cout << setw(16) << inventario[i].codigo << setw(18 + (inventario[i].nombre == "Azúcar" || inventario[i].nombre == "Café")) << inventario[i].nombre << setw(16) << inventario[i].cantidad << setw(16) << "$" << fixed << setprecision(2) << inventario[i].precio << endl;
     }
 }
+void BuscarProductoCodigo()
+{
+    string codigo;
+    bool encontrado = false;
+    cout << "=====BÚSQUEDA DE PRODUCTO POR CÓDIGO=====" << endl;
+    cout << "Ingrese el código del producto: ";
+    cin >> codigo;
+
+    for (int i = 0; i < NumProductos; i++)
+    {
+        if (inventario[i].codigo == codigo)
+        {
+            cout << "Producto encontrado:" << endl;
+            cout << "Código: " << inventario[i].codigo << endl;
+            cout << "Nombre: " << inventario[i].nombre << endl;
+            cout << "Cantidad: " << inventario[i].cantidad << endl;
+            cout << "Precio: $" << fixed << setprecision(2) << inventario[i].precio << endl;
+            encontrado = true;
+            break;
+        }
+    }
+
+    if (encontrado==false)
+    {
+        cout << "Producto no encontrado" << endl;
+    }
+}
 void MenuGerente()
 {
     string contrasena;
@@ -91,7 +118,7 @@ int main()
     int opcion;
     do
     {
-        cout << "Sistema de inventario" << endl;
+        cout << "Sistema de inventario" << endl; 
         cout << "Mostrar inventario--> 1" << endl;
         cout << "Buscar producto nombre--> 2" << endl;
         cout << "Buscar producto codigo--> 3" << endl;
@@ -109,7 +136,7 @@ int main()
 
             break;
         case 3:
-
+            BuscarProductoCodigo();
             break;
         case 4:
             MenuGerente();
