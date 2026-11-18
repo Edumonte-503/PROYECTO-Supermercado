@@ -21,3 +21,19 @@ int buscarProductoCarrito(string codigo)
 
     return -1;
 }
+
+bool validarProducto(string codigo)
+{
+    int posicion = buscarProductoCarrito(codigo);
+
+    if (posicion == -1)
+    {
+        cout << "El producto no existe en el inventario." << endl;
+        return false;
+    }
+    else
+    {
+        cout << "Producto encontrado: " << inventario[posicion].nombre << endl;
+        return true;
+    }
+}
