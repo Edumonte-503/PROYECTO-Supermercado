@@ -37,3 +37,24 @@ bool validarProducto(string codigo)
         return true;
     }
 }
+
+bool validarCantidad(int posicion, int cantidad)
+{
+    if (cantidad <= 0)
+    {
+        cout << "La cantidad debe ser mayor que cero." << endl;
+        return false;
+    }
+    else if (cantidad > inventario[posicion].cantidad)
+    {
+        cout << "No hay suficiente inventario." << endl;
+        cout << "Unidades disponibles: "
+             << inventario[posicion].cantidad << endl;
+        return false;
+    }
+    else
+    {
+        cout << "Cantidad disponible." << endl;
+        return true;
+    }
+}
