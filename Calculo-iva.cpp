@@ -58,3 +58,58 @@ bool validarCantidad(int posicion, int cantidad)
         return true;
     }
 }
+
+void agregarCarrito()
+{
+    string codigo;
+    int cantidad;
+
+    cout << "Ingrese el codigo del producto: ";
+    cin >> codigo;
+
+    int posicion = buscarProductoCarrito(codigo);
+
+    if (posicion == -1)
+    {
+        cout << "El producto no existe." << endl;
+        return;
+    }
+
+    cout << "Ingrese la cantidad: ";
+    cin >> cantidad;
+
+    if (validarCantidad(posicion, cantidad))
+    {
+        int indice = -1;
+
+        for (int i = 0; i < numCarrito; i++)
+        {
+            if (productosCarrito[i] == posicion)
+            {
+                indice = i;
+            }
+        }
+
+        if (indice != -1)
+        {
+            if (validarCantidad(posicion,
+                cantidadesCarrito[indice] + cantidad))
+            {
+                cantidadesCarrito[indice] += cantidad;
+                cout << "Cantidad actualizada." << endl;
+            }
+        }
+        else if (numCarrito < 50)
+        {
+            productosCarrito[numCarrito] = posicion;
+            cantidadesCarrito[numCarrito] = cantidad;
+            numCarrito++;
+
+            cout << "Producto agregado al carrito." << endl;
+        }
+        else
+        {
+            cout << "El carrito esta lleno." << endl;
+        }
+    }
+}
