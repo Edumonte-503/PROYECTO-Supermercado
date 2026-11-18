@@ -113,3 +113,19 @@ void agregarCarrito()
         }
     }
 }
+
+float calcularSubtotal()
+{
+    float subtotal = 0;
+
+    for (int i = 0; i < numCarrito; i++)
+    {
+        int posicion = productosCarrito[i];
+
+        subtotal = subtotal +
+                   (inventario[posicion].precio *
+                   cantidadesCarrito[i]);
+    }
+
+    return subtotal;
+}
