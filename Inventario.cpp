@@ -1,32 +1,32 @@
 #include <iostream>
 #include <string>
-#include <iomanip>
+#include <iomanip> //Sirve para dar formato a la salida de datos, como el número de decimales que se muestran en los precios
 #include <windows.h>
 
 using namespace std;
 
-struct producto
+struct producto // Estructura para almacenar los datos de cada producto
 {
     int cantidad;
     string nombre, codigo;
     float precio;
 };
 
-const int MAX_PRODUCTOS = 50;
+const int MAX_PRODUCTOS = 50; // Número máximo de productos en el inventario, const sinifica que no se puede cambiar el valor de la variable
 int NumProductos = 8;
 
-producto inventario[MAX_PRODUCTOS] = {
-    {20, "Arroz", "A01", 1.50},
-    {15, "Frijoles", "F02", 1.25},
-    {25, "Leche", "L03", 1.75},
-    {12, "Huevos", "H04", 3.50},
-    {30, "Azúcar", "AZ05", 1.20},
-    {18, "Aceite", "AC06", 3.25},
-    {40, "Pan", "P07", 0.75},
-    {10, "Café", "C08", 4.50}};
+producto inventario[MAX_PRODUCTOS] = {// Inventario inicial con 8 productos
+                                      {20, "Arroz", "A01", 1.50},
+                                      {15, "Frijoles", "F02", 1.25},
+                                      {25, "Leche", "L03", 1.75},
+                                      {12, "Huevos", "H04", 3.50},
+                                      {30, "Azúcar", "AZ05", 1.20},
+                                      {18, "Aceite", "AC06", 3.25},
+                                      {40, "Pan", "P07", 0.75},
+                                      {10, "Café", "C08", 4.50}};
 
 void mostrarInventario()
-{
+{ // Función para mostrar el inventario completo     //setw() se utiliza para alinear los datos en columnas
     cout << setw(18) << "Código" << setw(18) << "Nombre" << setw(18) << "Cantidad" << setw(18) << "Precio" << endl;
     for (int i = 0; i < NumProductos; i++)
     {
@@ -36,31 +36,31 @@ void mostrarInventario()
 void BuscarProductoCodigo()
 {
     string codigo;
-    bool encontrado = false;
+    bool encontrado = false; // Sirve para indicar si se encontró el producto o no, se inicializa en false porque aún no se ha buscado el producto
     cout << "=====BÚSQUEDA DE PRODUCTO POR CÓDIGO=====" << endl;
     cout << "Ingrese el código del producto: ";
     cin >> codigo;
 
-    for (int i = 0; i < NumProductos; i++)
+    for (int i = 0; i < NumProductos; i++) // se recorre el inventario para buscar el producto por código
     {
-        if (inventario[i].codigo == codigo)
+        if (inventario[i].codigo == codigo) // si el código ingresado coincide con el código del producto en el inventario
         {
             cout << "Producto encontrado:" << endl;
             cout << "Código: " << inventario[i].codigo << endl;
             cout << "Nombre: " << inventario[i].nombre << endl;
             cout << "Cantidad: " << inventario[i].cantidad << endl;
-            cout << "Precio: $" << fixed << setprecision(2) << inventario[i].precio << endl;
+            cout << "Precio: $" << fixed << setprecision(2) << inventario[i].precio << endl; //fixed y setprecision(2) se utilizan para mostrar el precio con 2 decimales
             encontrado = true;
             break;
         }
     }
 
-    if (encontrado==false)
+    if (encontrado == false) // si no se encuentra el producto, se muestra un mensaje indicando que no se encontró
     {
         cout << "Producto no encontrado" << endl;
     }
 }
-void MenuGerente()
+void MenuGerente() // Función para mostrar el menú de gerente
 {
     string contrasena;
     int opcion;
@@ -113,12 +113,12 @@ int main()
 {
 
     SetConsoleOutputCP(CP_UTF8);
-    SetConsoleCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);// Configuración de la consola para mostrar caracteres UTF-8, como tildes y ñ
 
     int opcion;
     do
     {
-        cout << "Sistema de inventario" << endl; 
+        cout << "Sistema de inventario" << endl; // Menu principal del sistema de inventario
         cout << "Mostrar inventario--> 1" << endl;
         cout << "Buscar producto nombre--> 2" << endl;
         cout << "Buscar producto codigo--> 3" << endl;
