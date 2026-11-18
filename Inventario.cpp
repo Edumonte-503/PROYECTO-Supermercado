@@ -33,36 +33,37 @@ void mostrarInventario()
         cout << setw(16) << inventario[i].codigo << setw(18 + (inventario[i].nombre == "Azúcar" || inventario[i].nombre == "Café")) << inventario[i].nombre << setw(16) << inventario[i].cantidad << setw(16) << "$" << fixed << setprecision(2) << inventario[i].precio << endl;
     }
 }
-void MenuGerente(){
+void MenuGerente()
+{
     string contrasena;
     int opcion;
     cout << "=====MENÚ DE GERENTE=====" << endl;
     cout << "Ingrese la contraseña de gerente: ";
     cin >> contrasena;
 
-    if (contrasena == "uca123") 
+    if (contrasena == "uca123")
     {
         do
         {
             cout << "=====MENÚ DE GERENTE=====" << endl;
-            cout << "1. Agregar producto" << endl;
-            cout << "2. Eliminar producto" << endl;
-            cout << "3. Modificar producto" << endl;
-            cout << "4. Mostrar inventario" << endl;
-            cout << "5. Salir" << endl;
+            cout << "Agregar producto --> 1" << endl;
+            cout << "Eliminar producto --> 2" << endl;
+            cout << " Modificar producto --> 3" << endl;
+            cout << "Mostrar inventario --> 4" << endl;
+            cout << "Salir --> 5" << endl;
             cout << "Ingrese una opción: ";
             cin >> opcion;
 
             switch (opcion)
             {
             case 1:
-                
+
                 break;
             case 2:
-                
+
                 break;
             case 3:
-                
+
                 break;
             case 4:
                 mostrarInventario();
@@ -80,8 +81,6 @@ void MenuGerente(){
     {
         cout << "Contraseña inválida. Acceso denegado" << endl;
     }
-
-    
 }
 int main()
 {
@@ -89,10 +88,40 @@ int main()
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 
-    cout << "=====SUPERMERCADO=====" << endl;
-    cout << "==Sistema de inventario==" << endl;
+    int opcion;
+    do
+    {
+        cout << "Sistema de inventario" << endl;
+        cout << "Mostrar inventario--> 1" << endl;
+        cout << "Buscar producto nombre--> 2" << endl;
+        cout << "Buscar producto codigo--> 3" << endl;
+        cout << "Menú de gerente--> 4" << endl;
+        cout << "Salir--> 5" << endl;
+        cout << "Ingrese una opción: ";
+        cin >> opcion;
 
-    mostrarInventario();
+        switch (opcion)
+        {
+        case 1:
+            mostrarInventario();
+            break;
+        case 2:
+
+            break;
+        case 3:
+
+            break;
+        case 4:
+            MenuGerente();
+            break;
+        case 5:
+            cout << "Saliendo del sistema de inventario" << endl;
+            break;
+        default:
+            cout << "Opción inválida. Intentar otra vez" << endl;
+            break;
+        }
+    } while (opcion != 5);
 
     return 0;
 }
