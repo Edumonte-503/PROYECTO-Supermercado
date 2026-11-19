@@ -40,3 +40,18 @@ float calcularSubtotal()
     }
     return subtotal;
 }
+// Variables para que imprimirFactura() 
+float montoPagado = 0;
+float cambioEntregado = 0;
+bool pagoExitoso = false;
+
+// Pide el dinero, verifica que alcance y calcula el cambio
+void realizarPago(float total)
+{
+    float dinero;
+    pagoExitoso = false;
+
+    cout << "=====PAGO=====" << endl;
+    cout << fixed << setprecision(2);
+    cout << "Total a pagar: $" << total << endl;
+}
