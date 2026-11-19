@@ -1,11 +1,9 @@
 #include <iostream>
 #include <string>
 #include <iomanip> //Sirve para dar formato a la salida de datos, como el número de decimales que se muestran en los precios
-#include <windows.h>
 #include "Inventario.h"
 
 using namespace std;
-
 
 int NumProductos = 8;
 
@@ -173,7 +171,7 @@ void ModificarProducto() // Función para modificar un producto del inventario
                 break;
             case 2:
                 cout << "Ingrese la nueva cantidad del producto: ";
-                if (inventario[i].cantidad < 0) 
+                if (inventario[i].cantidad < 0)
                 {
                     cout << "La cantidad no puede ser negativa. No se puede modificar el producto" << endl;
                     return;
@@ -181,7 +179,7 @@ void ModificarProducto() // Función para modificar un producto del inventario
                 cin >> inventario[i].cantidad;
                 break;
             case 3:
-            float nuevoPrecio;  
+                float nuevoPrecio;
                 cout << "Ingrese el nuevo precio del producto: ";
                 cin >> nuevoPrecio;
                 inventario[i].precio = nuevoPrecio;
@@ -203,16 +201,16 @@ void ModificarProducto() // Función para modificar un producto del inventario
 }
 bool ActualizarInventario(string codigo, int cantidad) // Función para actualizar el inventario después de una venta
 {
-    for (int i = 0; i < NumProductos; i++) 
+    for (int i = 0; i < NumProductos; i++)
     {
-        if (inventario[i].codigo == codigo) 
+        if (inventario[i].codigo == codigo)
         {
             if (cantidad > 0 && inventario[i].cantidad >= cantidad) // Se verifica que la cantidad a vender sea mayor a 0 y que haya suficiente inventario
             {
                 inventario[i].cantidad -= cantidad; // Se actualiza la cantidad del producto en el inventario
                 return true;
-            } 
-            return false; 
+            }
+            return false;
         }
     }
     return false;
@@ -265,47 +263,4 @@ void MenuGerente() // Función para mostrar el menú de gerente
     {
         cout << "Contraseña inválida. Acceso denegado" << endl;
     }
-}
-int main()
-{
-
-    SetConsoleOutputCP(CP_UTF8);
-    SetConsoleCP(CP_UTF8); // Configuración de la consola para mostrar caracteres UTF-8, como tilde y ñ
-
-    int opcion;
-    do
-    {
-        cout << "===Sistema de inventario===" << endl; // Menu principal del sistema de inventario
-        cout << "Mostrar inventario--> 1" << endl;
-        cout << "Buscar producto nombre--> 2" << endl;
-        cout << "Buscar producto codigo--> 3" << endl;
-        cout << "Menú de gerente--> 4" << endl;
-        cout << "Salir--> 5" << endl;
-        cout << "Ingrese una opción: ";
-        cin >> opcion;
-
-        switch (opcion)
-        {
-        case 1:
-            mostrarInventario();
-            break;
-        case 2:
-            BuscarProductoNombre();
-            break;
-        case 3:
-            BuscarProductoCodigo();
-            break;
-        case 4:
-            MenuGerente();
-            break;
-        case 5:
-            cout << "Saliendo del sistema de inventario" << endl;
-            break;
-        default:
-            cout << "Opción inválida. Intentar otra vez" << endl;
-            break;
-        }
-    } while (opcion != 5);
-
-    return 0;
 }
