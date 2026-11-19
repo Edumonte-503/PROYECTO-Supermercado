@@ -115,7 +115,7 @@ void AgregarProducto() // Función para agregar un producto al inventario
     cin >> NuevoProducto.precio;
     if (NuevoProducto.precio < 0) // Si el precio ingresado es menor a 0, se muestra un mensaje indicando que el precio no puede ser negativo y se retorna de la función
     {
-        cout << "El precio no puede ser negativo. No se puede agregar el producto." << endl;
+        cout << "El precio no puede ser negativo. No se puede agregar el producto" << endl;
         return;
     }
 
@@ -143,6 +143,62 @@ void EliminarProducto() // Función para eliminar un producto del inventario
             cout << "Producto eliminado" << endl;
             encontrado = true;
             break;
+        }
+    }
+
+    if (encontrado == false)
+    {
+        cout << "Producto no encontrado" << endl;
+    }
+}
+void ModificarProducto() // Función para modificar un producto del inventario
+{
+    string codigo;
+    bool encontrado = false;
+    cout << "=====MODIFICAR PRODUCTO=====" << endl;
+    cout << "Ingrese el código del producto: ";
+    cin >> codigo;
+    int opcion;
+    for (int i = 0; i < NumProductos; i++) // Se recorre el inventario para buscar el producto por código
+    {
+        if (inventario[i].codigo == codigo) // Si el código ingresado coincide con el código del producto en el inventario
+        {
+            cout << "Producto encontrado:" << inventario[i].nombre << endl;
+            cout << "Modificar nombre --> 1" << endl;
+            cout << "Modificar cantidad --> 2" << endl;
+            cout << "Modificar precio --> 3" << endl;
+            cout << "Cancelar modificación --> 4" << endl;
+
+            cin >> opcion;
+
+            switch (opcion) // Se utiliza un switch para modificar el producto según la opción ingresada
+            {
+            case 1:
+                cout << "Ingrese el nuevo nombre del producto: ";
+                cin >> inventario[i].nombre;
+                break;
+            case 2:
+                cout << "Ingrese la nueva cantidad del producto: ";
+                if (inventario[i].cantidad < 0) 
+                {
+                    cout << "La cantidad no puede ser negativa. No se puede modificar el producto" << endl;
+                    return;
+                }
+                cin >> inventario[i].cantidad;
+                break;
+            case 3:
+            float nuevoPrecio;  
+                cout << "Ingrese el nuevo precio del producto: ";
+                cin >> nuevoPrecio;
+                inventario[i].precio = nuevoPrecio;
+                break;
+            case 4:
+                cout << "Modificación cancelada" << endl;
+                break;
+            default:
+                cout << "Opción inválida" << endl;
+                break;
+            }
         }
     }
 
@@ -181,7 +237,7 @@ void MenuGerente() // Función para mostrar el menú de gerente
                 EliminarProducto();
                 break;
             case 3:
-
+                ModificarProducto();
                 break;
             case 4:
                 mostrarInventario();
