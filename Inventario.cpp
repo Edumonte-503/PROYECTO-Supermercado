@@ -49,7 +49,7 @@ void BuscarProductoCodigo()
             cout << "Código: " << inventario[i].codigo << endl;
             cout << "Nombre: " << inventario[i].nombre << endl;
             cout << "Cantidad: " << inventario[i].cantidad << endl;
-            cout << "Precio: $" << fixed << setprecision(2) << inventario[i].precio << endl; //fixed y setprecision(2) se utilizan para mostrar el precio con 2 decimales
+            cout << "Precio: $" << fixed << setprecision(2) << inventario[i].precio << endl; // fixed y setprecision(2) se utilizan para mostrar el precio con 2 decimales
             encontrado = true;
             break;
         }
@@ -76,7 +76,7 @@ void BuscarProductoNombre()
             cout << "Código: " << inventario[i].codigo << endl;
             cout << "Nombre: " << inventario[i].nombre << endl;
             cout << "Cantidad: " << inventario[i].cantidad << endl;
-            cout << "Precio: $" << fixed << setprecision(2) << inventario[i].precio << endl; //fixed y setprecision(2) se utilizan para mostrar el precio con 2 decimales
+            cout << "Precio: $" << fixed << setprecision(2) << inventario[i].precio << endl; // fixed y setprecision(2) se utilizan para mostrar el precio con 2 decimales
             encontrado = true;
             break;
         }
@@ -88,7 +88,41 @@ void BuscarProductoNombre()
     }
 }
 
+void AgregarProducto() // Función para agregar un producto al inventario
+{
+    if (NumProductos >= MAX_PRODUCTOS) // Si el número de productos en el inventario es mayor o igual al número máximo de productos, se muestra un mensaje indicando que no se puede agregar más productos
+    {
+        cout << "No se puede agregar más productos. Inventario lleno." << endl;
+        return;
+    }
+    producto NuevoProducto;
+    cout << "=====AGREGAR PRODUCTO=====" << endl;
+    cout << "Ingrese el código del producto: ";
+    cin >> NuevoProducto.codigo;
+    for (int i = 0; i < NumProductos; i++) // Se recorre el inventario para verificar si el código ingresado ya existe
+    {
+        if (inventario[i].codigo == NuevoProducto.codigo) // Si el código ingresado coincide con el código de algún producto en el inventario, se muestra un mensaje indicando que el código ya existe y se retorna de la función
+        {
+            cout << "El código ingresado ya existe. No se puede agregar el producto." << endl;
+            return;
+        }
+    }
+    cout << "Ingrese el nombre del producto: ";
+    cin >> NuevoProducto.nombre;
+    cout << "Ingrese la cantidad del producto: ";
+    cin >> NuevoProducto.cantidad;
+    cout << "Ingrese el precio del producto: ";
+    cin >> NuevoProducto.precio;
+    if (NuevoProducto.precio < 0) // Si el precio ingresado es menor a 0, se muestra un mensaje indicando que el precio no puede ser negativo y se retorna de la función
+    {
+        cout << "El precio no puede ser negativo. No se puede agregar el producto." << endl;
+        return;
+    }
 
+    inventario[NumProductos] = NuevoProducto;
+    NumProductos++;
+    cout << "Producto agregado exitosamente" << endl;
+}
 void MenuGerente() // Función para mostrar el menú de gerente
 {
     string contrasena;
@@ -104,7 +138,7 @@ void MenuGerente() // Función para mostrar el menú de gerente
             cout << "=====MENÚ DE GERENTE=====" << endl;
             cout << "Agregar producto --> 1" << endl;
             cout << "Eliminar producto --> 2" << endl;
-            cout << " Modificar producto --> 3" << endl;
+            cout << "Modificar producto --> 3" << endl;
             cout << "Mostrar inventario --> 4" << endl;
             cout << "Salir --> 5" << endl;
             cout << "Ingrese una opción: ";
@@ -113,7 +147,7 @@ void MenuGerente() // Función para mostrar el menú de gerente
             switch (opcion)
             {
             case 1:
-
+                AgregarProducto();
                 break;
             case 2:
 
@@ -142,7 +176,7 @@ int main()
 {
 
     SetConsoleOutputCP(CP_UTF8);
-    SetConsoleCP(CP_UTF8);// Configuración de la consola para mostrar caracteres UTF-8, como tilde y ñ
+    SetConsoleCP(CP_UTF8); // Configuración de la consola para mostrar caracteres UTF-8, como tilde y ñ
 
     int opcion;
     do
