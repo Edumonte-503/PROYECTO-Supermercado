@@ -2,17 +2,11 @@
 #include <string>
 #include <iomanip> //Sirve para dar formato a la salida de datos, como el número de decimales que se muestran en los precios
 #include <windows.h>
+#include "Inventario.h"
 
 using namespace std;
 
-struct producto // Estructura para almacenar los datos de cada producto
-{
-    int cantidad;
-    string nombre, codigo;
-    float precio;
-};
 
-const int MAX_PRODUCTOS = 50; // Número máximo de productos en el inventario, const sinifica que no se puede cambiar el valor de la variable
 int NumProductos = 8;
 
 producto inventario[MAX_PRODUCTOS] = {// Inventario inicial con 8 productos
