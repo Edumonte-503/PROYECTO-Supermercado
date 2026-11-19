@@ -207,6 +207,22 @@ void ModificarProducto() // Función para modificar un producto del inventario
         cout << "Producto no encontrado" << endl;
     }
 }
+bool ActualizarInventario(string codigo, int cantidad) // Función para actualizar el inventario después de una venta
+{
+    for (int i = 0; i < NumProductos; i++) 
+    {
+        if (inventario[i].codigo == codigo) 
+        {
+            if (cantidad > 0 && inventario[i].cantidad >= cantidad) // Se verifica que la cantidad a vender sea mayor a 0 y que haya suficiente inventario
+            {
+                inventario[i].cantidad -= cantidad; // Se actualiza la cantidad del producto en el inventario
+                return true;
+            } 
+            return false; 
+        }
+    }
+    return false;
+}
 void MenuGerente() // Función para mostrar el menú de gerente
 {
     string contrasena;
