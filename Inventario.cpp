@@ -16,14 +16,14 @@ const int MAX_PRODUCTOS = 50; // Número máximo de productos en el inventario, 
 int NumProductos = 8;
 
 producto inventario[MAX_PRODUCTOS] = {// Inventario inicial con 8 productos
-                                      {20, "Arroz", "A01", 1.50},
-                                      {15, "Frijoles", "F02", 1.25},
-                                      {25, "Leche", "L03", 1.75},
-                                      {12, "Huevos", "H04", 3.50},
-                                      {30, "Azúcar", "AZ05", 1.20},
-                                      {18, "Aceite", "AC06", 3.25},
-                                      {40, "Pan", "P07", 0.75},
-                                      {10, "Café", "C08", 4.50}};
+{20, "Arroz", "A01", 1.50},
+{15, "Frijoles", "F02", 1.25},
+{25, "Leche", "L03", 1.75},
+{12, "Huevos", "H04", 3.50},
+{30, "Azúcar", "AZ05", 1.20},
+{18, "Aceite", "AC06", 3.25},
+{40, "Pan", "P07", 0.75},
+{10, "Café", "C08", 4.50}};
 
 void mostrarInventario()
 { // Función para mostrar el inventario completo     //setw() se utiliza para alinear los datos en columnas
@@ -60,6 +60,35 @@ void BuscarProductoCodigo()
         cout << "Producto no encontrado" << endl;
     }
 }
+void BuscarProductoNombre()
+{
+    string nombre;
+    bool encontrado = false; // Sirve para indicar si se encontró el producto o no, se inicializa en false porque aún no se ha buscado el producto
+    cout << "=====BÚSQUEDA DE PRODUCTO POR NOMBRE=====" << endl;
+    cout << "Ingrese el nombre: ";
+    cin >> nombre;
+
+    for (int i = 0; i < NumProductos; i++) // se recorre el inventario para buscar el producto por nombre
+    {
+        if (inventario[i].nombre == nombre) // si el nombre ingresado coincide con el nombre del producto en el inventario
+        {
+            cout << "Producto encontrado:" << endl;
+            cout << "Código: " << inventario[i].codigo << endl;
+            cout << "Nombre: " << inventario[i].nombre << endl;
+            cout << "Cantidad: " << inventario[i].cantidad << endl;
+            cout << "Precio: $" << fixed << setprecision(2) << inventario[i].precio << endl; //fixed y setprecision(2) se utilizan para mostrar el precio con 2 decimales
+            encontrado = true;
+            break;
+        }
+    }
+
+    if (encontrado == false) // si no se encuentra el producto, se muestra un mensaje indicando que no se encontró
+    {
+        cout << "Producto no encontrado" << endl;
+    }
+}
+
+
 void MenuGerente() // Función para mostrar el menú de gerente
 {
     string contrasena;
@@ -113,12 +142,12 @@ int main()
 {
 
     SetConsoleOutputCP(CP_UTF8);
-    SetConsoleCP(CP_UTF8);// Configuración de la consola para mostrar caracteres UTF-8, como tildes y ñ
+    SetConsoleCP(CP_UTF8);// Configuración de la consola para mostrar caracteres UTF-8, como tilde y ñ
 
     int opcion;
     do
     {
-        cout << "Sistema de inventario" << endl; // Menu principal del sistema de inventario
+        cout << "===Sistema de inventario===" << endl; // Menu principal del sistema de inventario
         cout << "Mostrar inventario--> 1" << endl;
         cout << "Buscar producto nombre--> 2" << endl;
         cout << "Buscar producto codigo--> 3" << endl;
@@ -133,7 +162,7 @@ int main()
             mostrarInventario();
             break;
         case 2:
-
+            BuscarProductoNombre();
             break;
         case 3:
             BuscarProductoCodigo();
