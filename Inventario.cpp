@@ -16,14 +16,14 @@ const int MAX_PRODUCTOS = 50; // Número máximo de productos en el inventario, 
 int NumProductos = 8;
 
 producto inventario[MAX_PRODUCTOS] = {// Inventario inicial con 8 productos
-{20, "Arroz", "A01", 1.50},
-{15, "Frijoles", "F02", 1.25},
-{25, "Leche", "L03", 1.75},
-{12, "Huevos", "H04", 3.50},
-{30, "Azúcar", "AZ05", 1.20},
-{18, "Aceite", "AC06", 3.25},
-{40, "Pan", "P07", 0.75},
-{10, "Café", "C08", 4.50}};
+                                      {20, "Arroz", "A01", 1.50},
+                                      {15, "Frijoles", "F02", 1.25},
+                                      {25, "Leche", "L03", 1.75},
+                                      {12, "Huevos", "H04", 3.50},
+                                      {30, "Azúcar", "AZ05", 1.20},
+                                      {18, "Aceite", "AC06", 3.25},
+                                      {40, "Pan", "P07", 0.75},
+                                      {10, "Café", "C08", 4.50}};
 
 void mostrarInventario()
 { // Función para mostrar el inventario completo     //setw() se utiliza para alinear los datos en columnas
@@ -121,7 +121,35 @@ void AgregarProducto() // Función para agregar un producto al inventario
 
     inventario[NumProductos] = NuevoProducto;
     NumProductos++;
-    cout << "Producto agregado exitosamente" << endl;
+    cout << "Producto agregado" << endl;
+}
+void EliminarProducto() // Función para eliminar un producto del inventario
+{
+    string codigo;
+    bool encontrado = false;
+    cout << "=====ELIMINAR PRODUCTO=====" << endl;
+    cout << "Ingrese el código del producto: ";
+    cin >> codigo;
+
+    for (int i = 0; i < NumProductos; i++)
+    {
+        if (inventario[i].codigo == codigo)
+        {
+            for (int j = i; j < NumProductos - 1; j++) // Se recorre el inventario desde la posición del producto a eliminar hasta el final del inventario
+            {
+                inventario[j] = inventario[j + 1]; // Se desplaza cada producto una posición hacia atrás, sobrescribiendo el producto a eliminar
+            }
+            NumProductos--; // Se decrementa el número de productos en el inventario
+            cout << "Producto eliminado" << endl;
+            encontrado = true;
+            break;
+        }
+    }
+
+    if (encontrado == false) // Si no se encuentra el producto, se muestra un mensaje indicando que no se encontró
+    {
+        cout << "Producto no encontrado" << endl;
+    }
 }
 void MenuGerente() // Función para mostrar el menú de gerente
 {
@@ -150,7 +178,7 @@ void MenuGerente() // Función para mostrar el menú de gerente
                 AgregarProducto();
                 break;
             case 2:
-
+                EliminarProducto();
                 break;
             case 3:
 
