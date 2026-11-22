@@ -137,4 +137,19 @@ void imprimirFactura()
     cout << "=================================" << endl;
     cout << "¡Gracias por su compra!" << endl;
 }
+//junta todo del proceso, se manda a llamar desde el menu principal
+void procesarCompra(){
+    if(numCarrito ==0){
+        cout<<"el carrito esta vacio."<< endl;
+        return;
+    }
+    float total = calcularSubtotal(); 
+    realizarPago(total);
+    actualizarInventario();
+    imprimirFactura();
+
+    if (pagoExitoso == true){
+        numCarrito = 0; //vacia el carrito para la siguiente compra
+    }
+}
 
