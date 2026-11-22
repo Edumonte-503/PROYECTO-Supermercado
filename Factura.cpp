@@ -58,12 +58,22 @@ void realizarPago(float total)
     cout << "Ingrese el dinero del cliente: $";
     cin >> dinero;
 
-    while (true)
-    {
-        cout << "Ingrese el dinero del cliente: $";
+    while (true){
+    cout << "Ingrese el dinero del cliente (0 para cancelar): $";
         cin >> dinero;
 
-        if (dinero < total)
+        if (cin.fail())// si escribieron letras en vez de un número
+        {
+            cin.clear();
+            cin.ignore(10000);
+            cout << "Ingrese un número válido." << endl;
+        }
+        else if (dinero == 0)
+        {
+            cout << "Pago cancelado." << endl;
+            return;
+        }
+        else if (dinero < total)
         {
             cout << "Dinero insuficiente. Faltan $" << (total - dinero) << endl;
         }
