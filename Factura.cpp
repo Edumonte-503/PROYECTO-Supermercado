@@ -88,3 +88,19 @@ void realizarPago(float total)
     }
         
 }
+ //Resta del inventario lo que se vendió
+void actualizarInventario()
+{
+    if (pagoExitoso == false) // solo se actualiza si el pago fue exitoso
+    {
+        return;
+    }
+
+    for (int i = 0; i < numCarrito; i++)
+    {
+        int posicion = productosCarrito[i]; // posición del producto en el inventario
+        inventario[posicion].cantidad = inventario[posicion].cantidad - cantidadesCarrito[i];
+    }
+
+    cout << "Inventario actualizado." << endl;
+}
