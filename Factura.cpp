@@ -104,3 +104,17 @@ void actualizarInventario()
 
     cout << "Inventario actualizado." << endl;
 }
+//Muestra la factura final
+void imprimirFactura()
+{
+    if (pagoExitoso == false)
+    {
+        return;
+    }
+
+    float total = 0;
+    cout << fixed << setprecision(2);
+    cout << endl << "============ FACTURA ============" << endl;
+    cout << left << setw(8) << "Código" << setw(6) << "Cant" << setw(10) << "Precio" << setw(10) << "Subtotal" << "Producto" << endl;
+    cout << "---------------------------------" << endl;
+}
