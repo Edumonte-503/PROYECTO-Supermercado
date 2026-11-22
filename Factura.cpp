@@ -117,4 +117,17 @@ void imprimirFactura()
     cout << endl << "============ FACTURA ============" << endl;
     cout << left << setw(8) << "Código" << setw(6) << "Cant" << setw(10) << "Precio" << setw(10) << "Subtotal" << "Producto" << endl;
     cout << "---------------------------------" << endl;
+
+    for (int i = 0; i < numCarrito; i++)
+    {
+        int posicion = productosCarrito[i];
+        float subtotal = inventario[posicion].precio * cantidadesCarrito[i];
+        total = total + subtotal;
+
+        cout << left << setw(8) << inventario[posicion].codigo
+             << setw(6) << cantidadesCarrito[i]
+             << "$" << setw(9) << inventario[posicion].precio
+             << "$" << setw(9) << subtotal
+             << inventario[posicion].nombre << endl;
+    }
 }
