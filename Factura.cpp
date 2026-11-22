@@ -130,4 +130,11 @@ void imprimirFactura()
              << "$" << setw(9) << subtotal
              << inventario[posicion].nombre << endl;
     }
+    cout << "---------------------------------" << endl;
+    cout << "TOTAL:  $" << total << endl;
+    cout << "PAGADO: $" << montoPagado << endl;
+    cout << "CAMBIO: $" << cambioEntregado << endl;
+    cout << "=================================" << endl;
+    cout << "¡Gracias por su compra!" << endl;
 }
+
