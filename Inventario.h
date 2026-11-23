@@ -1,5 +1,6 @@
-#ifndef Inventario_h
-#define Inventario_h
+
+#ifndef INVENTARIO_H
+#define INVENTARIO_H
 
 #include <string>
 using namespace std;
