@@ -145,3 +145,13 @@ float calcularSubtotal()
 
     return subtotal;
 }
+
+float calcularIVA(float subtotal)
+{
+    float iva;
+
+    iva = subtotal * 0.13;
+
+    return iva;
+}
+
