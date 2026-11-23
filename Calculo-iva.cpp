@@ -4,9 +4,9 @@
 #include <string>
 #include <iomanip>
 #include "Inventario.h"
+#include "Carrito.h"
 
 using namespace std;
-
 
 string productosCarrito[50];
 int cantidadesCarrito[50];
@@ -208,5 +208,64 @@ void mostrarCarrito()
     cout << "IVA (13%): $" << iva << endl;
     cout << "TOTAL A PAGAR: $" << total << endl;
     cout << "============================" << endl;
+}
+
+void finalizarCompra()
+{
+    if (numCarrito == 0)
+    {
+        cout << "El carrito esta vacio." << endl;
+        return;
+    }
+
+   
+    for (int i = 0; i < numCarrito; i++)
+    {
+        int posicion = buscarProductoCarrito(productosCarrito[i]);
+
+        if (posicion == -1)
+        {
+            cout << "El producto " << productosCarrito[i]
+                 << " ya no existe en el inventario." << endl;
+            cout << "No se puede finalizar la compra." << endl;
+            return;
+        }
+
+        if (inventario[posicion].cantidad < cantidadesCarrito[i])
+        {
+            cout << "No hay suficiente inventario de "
+                 << inventario[posicion].nombre << endl;
+            cout << "No se puede finalizar la compra." << endl;
+            return;
+        }
+    }
+
+   
+    mostrarCarrito();
+
+    char confirmar;
+
+    cout << "\nDesea confirmar la compra? (S/N): ";
+    cin >> confirmar;
+
+    if (confirmar == 'S' || confirmar == 's')
+    {
+       
+        for (int i = 0; i < numCarrito; i++)
+        {
+            ActualizarInventario(productosCarrito[i],
+                                cantidadesCarrito[i]);
+        }
+
+        cout << "\nCompra realizada exitosamente." << endl;
+        cout << "Gracias por su compra." << endl;
+
+       
+        numCarrito = 0;
+    }
+    else
+    {
+        cout << "Compra no confirmada." << endl;
+    }
 }
 
