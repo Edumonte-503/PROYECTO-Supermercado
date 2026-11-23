@@ -1,13 +1,16 @@
 
+
 #include <iostream>
 #include <string>
+#include "Inventario.h"
+
 using namespace std;
 
 
-int productosCarrito[50];
+string productosCarrito[50];
 int cantidadesCarrito[50];
-
 int numCarrito = 0;
+
 
 int buscarProductoCarrito(string codigo)
 {
@@ -22,21 +25,24 @@ int buscarProductoCarrito(string codigo)
     return -1;
 }
 
+
 bool validarProducto(string codigo)
 {
     int posicion = buscarProductoCarrito(codigo);
 
     if (posicion == -1)
     {
-        cout << "El producto no existe en el inventario." << endl;
+        cout << "El producto no existe." << endl;
         return false;
     }
     else
     {
-        cout << "Producto encontrado: " << inventario[posicion].nombre << endl;
+        cout << "Producto encontrado: "
+             << inventario[posicion].nombre << endl;
         return true;
     }
 }
+
 
 bool validarCantidad(int posicion, int cantidad)
 {
@@ -45,19 +51,29 @@ bool validarCantidad(int posicion, int cantidad)
         cout << "La cantidad debe ser mayor que cero." << endl;
         return false;
     }
-    else if (cantidad > inventario[posicion].cantidad)
+
+    int cantidadEnCarrito = 0;
+
+    for (int i = 0; i < numCarrito; i++)
+    {
+        if (productosCarrito[i] == inventario[posicion].codigo)
+        {
+            cantidadEnCarrito = cantidadesCarrito[i];
+        }
+    }
+
+    if (cantidad + cantidadEnCarrito > inventario[posicion].cantidad)
     {
         cout << "No hay suficiente inventario." << endl;
-        cout << "Unidades disponibles: "
-             << inventario[posicion].cantidad << endl;
+        cout << "Unidades disponibles para agregar: "
+             << inventario[posicion].cantidad - cantidadEnCarrito
+             << endl;
         return false;
     }
-    else
-    {
-        cout << "Cantidad disponible." << endl;
-        return true;
-    }
+
+    return true;
 }
+
 
 void agregarCarrito()
 {
@@ -84,24 +100,21 @@ void agregarCarrito()
 
         for (int i = 0; i < numCarrito; i++)
         {
-            if (productosCarrito[i] == posicion)
+            if (productosCarrito[i] == codigo)
             {
                 indice = i;
+                break;
             }
         }
 
         if (indice != -1)
         {
-            if (validarCantidad(posicion,
-                cantidadesCarrito[indice] + cantidad))
-            {
-                cantidadesCarrito[indice] += cantidad;
-                cout << "Cantidad actualizada." << endl;
-            }
+            cantidadesCarrito[indice] += cantidad;
+            cout << "Cantidad actualizada." << endl;
         }
         else if (numCarrito < 50)
         {
-            productosCarrito[numCarrito] = posicion;
+            productosCarrito[numCarrito] = codigo;
             cantidadesCarrito[numCarrito] = cantidad;
             numCarrito++;
 
@@ -114,17 +127,20 @@ void agregarCarrito()
     }
 }
 
+
 float calcularSubtotal()
 {
     float subtotal = 0;
 
     for (int i = 0; i < numCarrito; i++)
     {
-        int posicion = productosCarrito[i];
+        int posicion = buscarProductoCarrito(productosCarrito[i]);
 
-        subtotal = subtotal +
-                   (inventario[posicion].precio *
-                   cantidadesCarrito[i]);
+        if (posicion != -1)
+        {
+            subtotal += inventario[posicion].precio *
+                        cantidadesCarrito[i];
+        }
     }
 
     return subtotal;
