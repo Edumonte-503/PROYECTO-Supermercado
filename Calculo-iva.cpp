@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <iomanip>
 #include "Inventario.h"
 
 using namespace std;
@@ -162,5 +163,50 @@ float calcularTotal(float subtotal, float iva)
     total = subtotal + iva;
 
     return total;
+}
+
+void mostrarCarrito()
+{
+    if (numCarrito == 0)
+    {
+        cout << "El carrito esta vacio." << endl;
+        return;
+    }
+
+    cout << "\n===== CARRITO DE COMPRAS =====" << endl;
+
+    for (int i = 0; i < numCarrito; i++)
+    {
+        int posicion = buscarProductoCarrito(productosCarrito[i]);
+
+        if (posicion != -1)
+        {
+            cout << "\nProducto: " << inventario[posicion].nombre << endl;
+            cout << "Codigo: " << inventario[posicion].codigo << endl;
+            cout << "Cantidad: " << cantidadesCarrito[i] << endl;
+            cout << "Precio unitario: $"
+                 << inventario[posicion].precio << endl;
+
+            cout << "Total del producto: $"
+                 << inventario[posicion].precio * cantidadesCarrito[i]
+                 << endl;
+        }
+        else
+        {
+            cout << "\nProducto no disponible: "
+                 << productosCarrito[i] << endl;
+        }
+    }
+
+    float subtotal = calcularSubtotal();
+    float iva = calcularIVA(subtotal);
+    float total = calcularTotal(subtotal, iva);
+
+    cout << "\n============================" << endl;
+    cout << fixed << setprecision(2);
+    cout << "Subtotal: $" << subtotal << endl;
+    cout << "IVA (13%): $" << iva << endl;
+    cout << "TOTAL A PAGAR: $" << total << endl;
+    cout << "============================" << endl;
 }
 
