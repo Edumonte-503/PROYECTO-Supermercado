@@ -1,72 +1,42 @@
 #include <iostream>
-#include <string>
 #include <iomanip>
-#ifdef _WIN32
-#include <windows.h>
-#endif
+#include <limits>
+#include <string>
+#include "Inventario.h"
+#include "Carrito.h"
+#include "Factura.h"
+
 using namespace std;
 
-struct producto
-{
-    int cantidad;
-    string nombre, codigo;
-    float precio;
-};
 
-const int MAX_PRODUCTOS = 50;
-int NumProductos = 8;
-
-producto inventario[MAX_PRODUCTOS] = {
-    {20, "Arroz", "A01", 1.50},
-    {15, "Frijoles", "F02", 1.25},
-    {25, "Leche", "L03", 1.75},
-    {12, "Huevos", "H04", 3.50},
-    {30, "Azúcar", "AZ05", 1.20},
-    {18, "Aceite", "AC06", 3.25},
-    {40, "Pan", "P07", 0.75},
-    {10, "Café", "C08", 4.50}};
-
-int productosCarrito[50];
-int cantidadesCarrito[50];
-int numCarrito = 0;
-
-float calcularSubtotal()
-{
-    float subtotal = 0;
-    for (int i = 0; i < numCarrito; i++)
-    {
-        int posicion = productosCarrito[i];
-        subtotal = subtotal + (inventario[posicion].precio * cantidadesCarrito[i]);
-    }
-    return subtotal;
-}
-// Variables para que imprimirFactura() 
+// Variables para controlar el pago
 float montoPagado = 0;
 float cambioEntregado = 0;
 bool pagoExitoso = false;
 
-//Pide el dinero, verifica que alcance y calcula el cambio
+// Realizar el pago de la compra
 void realizarPago(float total)
 {
     float dinero;
     pagoExitoso = false;
+    montoPagado = 0;
+    cambioEntregado = 0;
 
-    cout << "=====PAGO=====" << endl;
+    cout << "\n===== PAGO =====" << endl;
     cout << fixed << setprecision(2);
-    cout << "Total a pagar: $" << total << endl;
+    cout << "Total a pagar (IVA incluido): $" << total << endl;
 
-    cout << "Ingrese el dinero del cliente: $";
-    cin >> dinero;
-
-    while (true){
-    cout << "Ingrese el dinero del cliente (0 para cancelar): $";
+    while (true)
+    {
+        cout << "Ingrese el dinero del cliente (0 para cancelar): $";
         cin >> dinero;
 
-        if (cin.fail())// si escribieron letras en vez de un número
+        if (cin.fail())
         {
             cin.clear();
-            cin.ignore(10000);
-            cout << "Ingrese un número válido." << endl;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+            cout << "Error: ingrese un monto numerico valido." << endl;
         }
         else if (dinero == 0)
         {
@@ -75,81 +45,186 @@ void realizarPago(float total)
         }
         else if (dinero < total)
         {
-            cout << "Dinero insuficiente. Faltan $" << (total - dinero) << endl;
+            cout << "Dinero insuficiente." << endl;
+            cout << "Faltan $" << total - dinero << endl;
         }
         else
         {
             montoPagado = dinero;
-            cambioEntregado = dinero - total; // cambio = dinero entregado - total
+            cambioEntregado = dinero - total;
             pagoExitoso = true;
-            cout << "Pago aceptado. Cambio: $" << cambioEntregado << endl;
+
+            cout << "\nPago aceptado." << endl;
+            cout << "Cambio a entregar: $" << cambioEntregado << endl;
+
             return;
         }
     }
-        
 }
- //Resta del inventario lo que se vendió
+// Actualizar el inventario despues de realizar el pago
 void actualizarInventario()
 {
-    if (pagoExitoso == false) // solo se actualiza si el pago fue exitoso
+    if (!pagoExitoso)
     {
         return;
     }
 
+    bool inventarioCorrecto = true;
+
     for (int i = 0; i < numCarrito; i++)
     {
-        int posicion = productosCarrito[i]; // posición del producto en el inventario
-        inventario[posicion].cantidad = inventario[posicion].cantidad - cantidadesCarrito[i];
+        bool actualizado = ActualizarInventario(
+            productosCarrito[i],
+            cantidadesCarrito[i]
+        );
+
+        if (!actualizado)
+        {
+            inventarioCorrecto = false;
+
+            cout << "Error al actualizar el producto: "
+                 << productosCarrito[i] << endl;
+        }
     }
 
-    cout << "Inventario actualizado." << endl;
+    if (inventarioCorrecto)
+    {
+        cout << "Inventario actualizado correctamente." << endl;
+    }
 }
-//Muestra la factura final
+// Mostrar la factura de la compra
 void imprimirFactura()
 {
-    if (pagoExitoso == false)
+    if (!pagoExitoso)
     {
         return;
     }
 
-    float total = 0;
+    float subtotalGeneral = calcularSubtotal();
+    float iva = calcularIVA(subtotalGeneral);
+    float total = calcularTotal(subtotalGeneral, iva);
+
     cout << fixed << setprecision(2);
-    cout << endl << "============ FACTURA ============" << endl;
-    cout << left << setw(8) << "Código" << setw(6) << "Cant" << setw(10) << "Precio" << setw(10) << "Subtotal" << "Producto" << endl;
-    cout << "---------------------------------" << endl;
+
+    cout << "==============================================" << endl;
+    cout << "              FACTURA DE VENTA                " << endl;
+    cout << "==============================================" << endl;
+
+    cout << left
+         << setw(10) << "Codigo"
+         << setw(18) << "Producto"
+         << setw(6) << "Cant."
+         << setw(9) << "Precio"
+         << "Subtotal" << endl;
+
+    cout << "----------------------------------------------" << endl;
 
     for (int i = 0; i < numCarrito; i++)
     {
-        int posicion = productosCarrito[i];
-        float subtotal = inventario[posicion].precio * cantidadesCarrito[i];
-        total = total + subtotal;
+        int posicion = -1;
 
-        cout << left << setw(8) << inventario[posicion].codigo
-             << setw(6) << cantidadesCarrito[i]
-             << "$" << setw(9) << inventario[posicion].precio
-             << "$" << setw(9) << subtotal
-             << inventario[posicion].nombre << endl;
+        // Buscar el producto en el inventario por su codigo
+        for (int j = 0; j < NumProductos; j++)
+        {
+            if (inventario[j].codigo == productosCarrito[i])
+            {
+                posicion = j;
+                break;
+            }
+        }
+
+        if (posicion != -1)
+        {
+            float subtotalProducto =
+                inventario[posicion].precio * cantidadesCarrito[i];
+
+            cout << left
+                 << setw(10) << inventario[posicion].codigo
+                 << setw(18) << inventario[posicion].nombre
+                 << setw(6) << cantidadesCarrito[i]
+                 << "$" << setw(8) << inventario[posicion].precio
+                 << "$" << subtotalProducto << endl;
+        }
     }
-    cout << "---------------------------------" << endl;
-    cout << "TOTAL:  $" << total << endl;
-    cout << "PAGADO: $" << montoPagado << endl;
-    cout << "CAMBIO: $" << cambioEntregado << endl;
-    cout << "=================================" << endl;
-    cout << "¡Gracias por su compra!" << endl;
+
+    cout << "----------------------------------------------" << endl;
+    cout << "Subtotal:       $" << subtotalGeneral << endl;
+    cout << "IVA (13%):     $" << iva << endl;
+    cout << "TOTAL:          $" << total << endl;
+    cout << "PAGADO:         $" << montoPagado << endl;
+    cout << "CAMBIO:         $" << cambioEntregado << endl;
+    cout << "==============================================" << endl;
+    cout << "          Gracias por su compra.              " << endl;
+    cout << "==============================================" << endl;
 }
-//junta todo del proceso, se manda a llamar desde el menu principal
-void procesarCompra(){
-    if(numCarrito ==0){
-        cout<<"el carrito esta vacio."<< endl;
+// Procesar la compra completa
+void procesarCompra()
+{
+    if (numCarrito == 0)
+    {
+        cout << "El carrito esta vacio." << endl;
         return;
     }
-    float total = calcularSubtotal(); 
-    realizarPago(total);
-    actualizarInventario();
-    imprimirFactura();
 
-    if (pagoExitoso == true){
-        numCarrito = 0; //vacia el carrito para la siguiente compra
+    // Verificar que los productos y cantidades sigan disponibles
+    for (int i = 0; i < numCarrito; i++)
+    {
+        int posicion = -1;
+
+        for (int j = 0; j < NumProductos; j++)
+        {
+            if (inventario[j].codigo == productosCarrito[i])
+            {
+                posicion = j;
+                break;
+            }
+        }
+
+        if (posicion == -1)
+        {
+            cout << "Producto no encontrado: "
+                 << productosCarrito[i] << endl;
+            cout << "No se puede procesar la compra." << endl;
+            return;
+        }
+
+        if (cantidadesCarrito[i] <= 0 ||
+            inventario[posicion].cantidad < cantidadesCarrito[i])
+        {
+            cout << "No hay suficiente inventario de "
+                 << inventario[posicion].nombre << endl;
+            cout << "No se puede procesar la compra." << endl;
+            return;
+        }
+    }
+
+    // Calcular subtotal, IVA y total
+    float subtotal = calcularSubtotal();
+    float iva = calcularIVA(subtotal);
+    float total = calcularTotal(subtotal, iva);
+
+    cout << "===== RESUMEN DE COMPRA =====" << endl;
+    cout << fixed << setprecision(2);
+    cout << "Subtotal: $" << subtotal << endl;
+    cout << "IVA (13%): $" << iva << endl;
+    cout << "Total a pagar: $" << total << endl;
+
+    // Solicitar el pago
+    realizarPago(total);
+
+    // Continuar solamente si el pago fue exitoso
+    if (pagoExitoso)
+    {
+        actualizarInventario();
+        imprimirFactura();
+
+        // Vaciar el carrito
+        numCarrito = 0;
+
+        cout << "Compra finalizada correctamente." << endl;
+    }
+    else
+    {
+        cout << "Compra cancelada." << endl;
     }
 }
-
