@@ -8,6 +8,9 @@
 
 using namespace std;
 
+extern string productosCarrito[50];
+extern int cantidadesCarrito[50];
+extern int numCarrito;
 
 // Variables para controlar el pago
 float montoPagado = 0;

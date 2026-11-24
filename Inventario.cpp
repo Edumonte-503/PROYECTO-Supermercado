@@ -196,7 +196,7 @@ void ModificarProducto() // Función para modificar un producto del inventario
 
     if (encontrado == false) // Si no se encuentra el producto, se muestra un mensaje indicando que no se encontró
     {
-        cout << "Producto no encontrado" << endl;
+        cout << "Error" << endl;
     }
 }
 bool ActualizarInventario(string codigo, int cantidad) // Función para actualizar el inventario después de una venta
